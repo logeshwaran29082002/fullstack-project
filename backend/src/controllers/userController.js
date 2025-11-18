@@ -1,28 +1,47 @@
 const User = require("../models/userSchema");
 const hashpassword = require("../utils/hashPassword");
+const gendratetoken = require("../utils/gendrateToken");
 
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // 1 check user aleady exited
+    // 1. Check if user already exists
     const user = await User.findOne({ email });
     if (user) {
-      return res.status(404).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
+
+    // 2. Hash password
     const hashed = await hashpassword(password);
 
-    // 3 save new user
+    // 3. Create new user
     const newUser = new User({
       name,
       email,
       password: hashed,
-      // password:await hashpassword(password)
     });
+
+    // Save user first
     await newUser.save();
-    res.status(201).json({ message: "signup Sucessfully", newUser });
+
+    // 4. Generate Token
+    const token = gendratetoken(newUser);
+
+    // 5. Response
+    res.status(201).json({
+      message: "Signup Successfully",
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+    });
+
   } catch (err) {
-    res.status(404).json(err);
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
