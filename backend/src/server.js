@@ -1,8 +1,5 @@
-
-
-
 const app = require("./app");
-const db = require("./config/db"); // Fixed Path
+require("./config/db");
 
 const port = process.env.PORT || 5000;
 

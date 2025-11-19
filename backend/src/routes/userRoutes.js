@@ -1,10 +1,10 @@
-const express = require('express');
-const { signup } = require('../controllers/userController');
+const express = require("express");
 const router = express.Router();
 
+const { signup, verifyOTP, resendOTP } = require("../controllers/userController");
 
+router.post("/signup", signup);
+router.post("/verify-otp", verifyOTP);
+router.post("/resend-otp", resendOTP);
 
-router.post('/signup', signup)
-
-
-module.exports = router
+module.exports = router;

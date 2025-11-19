@@ -18,31 +18,16 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
-    // 🔥 OTP verification fields
-    otp: {
-        type: String
-    },
-    otpExpireTime: {
-        type: Date
-    },
-    isVerified: {
-        type: Boolean,
-        default: false
-    },
+    otp: { type: String },
+    otpExpireTime: { type: Date },
+    isVerified: { type: Boolean, default: false },
 
-    // 🔥 Password reset fields (optional)
-    resetpasswordToken: {
-        type: String
-    },
-    resetpasswordExpires: {
-        type: Date
-    },
+    resetpasswordToken: { type: String },
+    resetpasswordExpires: { type: Date }
 
-   
-},
- {timestamps:true}
-);
+}, { timestamps: true });
 
-const User = mongoose.model('signup', userSchema);
+// IMPORTANT FIX ↓↓↓ DON'T CHANGE!!
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
