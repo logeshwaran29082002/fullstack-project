@@ -1,6 +1,6 @@
 const User = require("../models/userSchema");
 const hashpassword = require("../utils/hashPassword");
-const gendratetoken = require("../utils/gendrateToken");
+const sentOtp = require('../utils/sendOtp')
 
 const signup = async (req, res) => {
   try {
@@ -15,23 +15,36 @@ const signup = async (req, res) => {
     // 2. Hash password
     const hashed = await hashpassword(password);
 
+    // gendrate 6-digite password 
+    const otp = String(Math.floor(100000 + Math.random()*900000));
+    const otpExpire = Date.now()+ 5 * 60 * 1000; // 5min 
+
     // 3. Create new user
     const newUser = new User({
       name,
       email,
       password: hashed,
+      otp,
+      otpExpireTime: otpExpire,
+      isVerified:false
     });
 
-    // Save user first
+    // Save user
     await newUser.save();
 
-    // 4. Generate Token
-    const token = gendratetoken(newUser);
 
-    // 5. Response
+    // send email 
+
+    await sentOtp(email,otp);
+
+    return res.status(201).json({
+      message:"Signup successful. OTP sent to email.",
+  userId: newUser._id // frontend uses this to verify OTP
+    })
+
+    // 4. Response
     res.status(201).json({
       message: "Signup Successfully",
-      token,
       user: {
         id: newUser._id,
         name: newUser.name,
@@ -40,7 +53,6 @@ const signup = async (req, res) => {
     });
 
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Server error" });
   }
 };

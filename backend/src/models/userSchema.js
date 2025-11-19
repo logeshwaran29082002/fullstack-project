@@ -1,31 +1,48 @@
-const mongoose = require('mongoose')
-
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
+    name: {
+        type: String,
+        required: true,
         trim: true
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
-        lowercase:true,
-        trim:true
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true
     },
-    password:{
-        type:String,
-        required:true
+    password: {
+        type: String,
+        required: true
     },
-     resetpasswordToken: {
-        type:String
-    },
-    resetpasswordExpires:{
-        type:Date
-    }
-})
 
-const User = mongoose.model('Signup',userSchema)
+    // 🔥 OTP verification fields
+    otp: {
+        type: String
+    },
+    otpExpireTime: {
+        type: Date
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
 
-module.exports=User
+    // 🔥 Password reset fields (optional)
+    resetpasswordToken: {
+        type: String
+    },
+    resetpasswordExpires: {
+        type: Date
+    },
+
+   
+},
+ {timestamps:true}
+);
+
+const User = mongoose.model('signup', userSchema);
+
+module.exports = User;
