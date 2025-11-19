@@ -3,6 +3,7 @@ const hashpassword = require("../utils/hashPassword");
 const sentOtp = require("../utils/sendOtp");
 
 
+
 // ---------------- SIGNUP -----------------
 const signup = async (req, res) => {
   try {
@@ -116,5 +117,20 @@ const resendOTP = async (req, res) => {
 module.exports = {
   signup,
   verifyOTP,
-  resendOTP
+  resendOTP,
+  
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
