@@ -5,7 +5,7 @@ const router = express.Router();
 const { signup, verifyOTP, resendOTP,  } = require("../controllers/userController");
 
 //Login
-const { Login, resetPassword } = require("../controllers/loginController");
+const { Login, resetPassword, resetpasswordToken } = require("../controllers/loginController");
 
 
 // middleware
@@ -32,4 +32,8 @@ router.get("/profile", verifyToken, (req, res) => {
 
 // reset password 
 router.post("/reset-password",resetPassword)
+
+// reset password verify
+
+router.post('/reset-password/:token',resetpasswordToken)
 module.exports = router;

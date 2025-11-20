@@ -1,6 +1,7 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
+const hashed = require('../utils/hashPassword')
 const nodemailer = require("nodemailer");
 const Login = async (req, res) => {
   try {
@@ -38,7 +39,7 @@ const resetPassword = async (req, res) => {
   }
   const token = Math.random().toString(36).slice(-8);
   user.resetpasswordToken = token;
-  user.resetpasswordExpires = Date.now() + 360000; // 1hour
+  user.resetpasswordExpires = Date.now() + 3600000; // 1hour
 
   await user.save();
 
@@ -77,5 +78,13 @@ const resetpasswordToken = async (req,res)=>{
   if(!user){
     res.status(404).json({message:"Invalied token"})
   }
+  const hashedpassword = await bcrypt.hash(password,10);
+  user.password = hashedpassword;
+  user.resetpasswordToken=null;
+  user.resetpasswordExpires=null;
+
+  await user.save();
+
+  res.status(201).json({message:"Password reset sucessfully"})
 }
-module.exports = { Login, resetPassword };
+module.exports = { Login, resetPassword , resetpasswordToken};
