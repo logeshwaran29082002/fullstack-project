@@ -1,3 +1,107 @@
-.login{
-    color: blueviolet;
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f6fa;
+  font-family: "Poppins", sans-serif;
+}
+
+.card {
+  background: #fff;
+  width: 380px;
+  padding: 40px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.subtitle {
+  font-size: 14px;
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.inputBox {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.inputBox label {
+  font-size: 14px;
+  color: #555;
+}
+
+.inputBox input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  outline: none;
+  transition: 0.3s;
+}
+
+.inputBox input:focus {
+  border-color: #4b7bec;
+}
+
+.passwordWrapper {
+  position: relative;
+}
+
+.showPass {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4b7bec;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: #4b7bec;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #3867d6;
+}
+
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.signupLink {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.signupLink span {
+  color: #4b7bec;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signupLink span:hover {
+  text-decoration: underline;
 }
