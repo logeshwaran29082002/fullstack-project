@@ -37,7 +37,7 @@ const resetPassword = async (req, res) => {
   if (!user) {
     res.status(404).json({ message: "user not found" });
   }
-  const token = Math.random().toString(36).slice(-8);
+  const token = Math.random().toString(36).slice(-10);
   user.resetpasswordToken = token;
   user.resetpasswordExpires = Date.now() + 3600000; // 1hour
 
