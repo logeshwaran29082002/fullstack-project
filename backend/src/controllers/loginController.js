@@ -5,7 +5,7 @@ const hashed = require('../utils/hashPassword')
 const nodemailer = require("nodemailer");
 const Login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email,password } = req.body;
 
     // Check if user exists
     const user = await User.findOne({ email: email.toLowerCase() });
@@ -37,7 +37,7 @@ const resetPassword = async (req, res) => {
   if (!user) {
     res.status(404).json({ message: "user not found" });
   }
-  const token = Math.random().toString(36).slice(-10);
+  const token = Math.random().toString(36).slice(-6);
   user.resetpasswordToken = token;
   user.resetpasswordExpires = Date.now() + 3600000; // 1hour
 
@@ -61,7 +61,11 @@ const resetPassword = async (req, res) => {
     if(err){
       res.status(404).json({message:"something went wrong . Try again later!"})
     }
-    res.status(200).json({message:" password reset email send sucessfully"+info.response})
+   res.status(200).json({
+    message: "Password reset email sent successfully",
+    token
+});
+
   });
 };
 
