@@ -5,7 +5,7 @@ const router = express.Router();
 const { signup, verifyOTP, resendOTP,  } = require("../controllers/userController");
 
 //Login
-const { Login } = require("../controllers/loginController");
+const { Login, resetPassword } = require("../controllers/loginController");
 
 
 // middleware
@@ -22,10 +22,14 @@ router.post("/resend-otp", resendOTP);
 router.post("/login",Login);
 
 
+// token verify
 router.get("/profile", verifyToken, (req, res) => {
   res.json({
     message: "Protected route",
     user: req.user
   });
 });
+
+// reset password 
+router.post("/reset-password",resetPassword)
 module.exports = router;

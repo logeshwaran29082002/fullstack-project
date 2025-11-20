@@ -1,8 +1,7 @@
 const User = require("../models/userSchema");
-const bcrypt = require('bcrypt')
-const generateToken = require('../utils/generateToken')
-
-
+const bcrypt = require("bcrypt");
+const generateToken = require("../utils/generateToken");
+const nodemailer = require("nodemailer");
 const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -22,12 +21,61 @@ const Login = async (req, res) => {
     // Generate JWT token
     const token = generateToken(user._id);
 
-    return res.status(200).json({token});
-
+    return res.status(200).json({ token });
   } catch (error) {
     console.error("Login error:", error);
     return res.status(500).json({ message: "Login error" });
   }
 };
 
-module.exports = { Login };
+// reset password
+
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(404).json({ message: "user not found" });
+  }
+  const token = Math.random().toString(36).slice(-8);
+  user.resetpasswordToken = token;
+  user.resetpasswordExpires = Date.now() + 360000; // 1hour
+
+  await user.save();
+
+  const transporater = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "logeshwaran2982@gmail.com",
+      pass: "cxwm exok ptdf alcj",
+    },
+  });
+
+  const message = {
+    from: "logeshwaran2982@gmail.com",
+    to: user.email,
+    subject: "password reset request",
+    text: `you are receving this email  because you (or someone else ) has requested a password  reset  for your account. \n\n please use the token  to reset you password: ${token} \n\n If you did the password reset , please ignore this email.`,
+  };
+  transporater.sendMail(message,(err,info)=>{
+    if(err){
+      res.status(404).json({message:"something went wrong . Try again later!"})
+    }
+    res.status(200).json({message:" password reset email send sucessfully"+info.response})
+  });
+};
+
+
+// reset password verify 
+ 
+const resetpasswordToken = async (req,res)=>{
+  const {token} = req.params;
+  const {password} = req.body;
+  const user = await User.findOne({
+    resetpasswordToken :token,
+    resetpasswordExpires :{$gt :Date.now()},
+  });
+  if(!user){
+    res.status(404).json({message:"Invalied token"})
+  }
+}
+module.exports = { Login, resetPassword };
