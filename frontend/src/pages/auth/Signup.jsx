@@ -1,169 +1,167 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import styles from '../../styles/pages/Signup.module.css'
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import styles from "../../styles/pages/Signup.module.css";
 
 function Signup() {
-  const navigate = useNavigate()
-const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/api/signup", form)
+      const response = await axios.post(
+        "http://localhost:5000/api/signup",
+        form
+      );
 
       // 🔥 Pass email + userId to OTP page (VERY IMPORTANT)
       navigate("/verify-otp", {
-        state: { 
+        state: {
           email: form.email,
-          userId: response.data.userId   // 👈 BACKEND RETURNED USERID
-        }
-      })
-
+          userId: response.data.userId, // 👈 BACKEND RETURNED USERID
+        },
+      });
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed")
+      alert(err.response?.data?.message || "Signup failed");
     }
-  }
+  };
 
   return (
-<div className={styles.outer}>
-  <div className={styles.frame}>
-
-    {/* LEFT PANEL */}
-    <div
-      className={styles.left}
-      style={{
-        backgroundImage: `url("/mnt/data/456a47bd-9139-431c-bb4b-281126138cd5.png")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className={styles.leftContent}>
-        <h1>WELCOME<br />BACK!</h1>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing.</p>
-      </div>
-    </div>
-
-    {/* RIGHT PANEL */}
-    <div className={styles.right}>
-      {/* 👉 YOUR EXISTING WORKING SIMPLE FORM GOES HERE */}
-      { /* DON’T CHANGE YOUR HANDLE SUBMIT */ }
-
-      <form className={styles.form} onSubmit={handleSubmit}>
-        
-        <h2>Sign Up</h2>
-
-        {/* Username */}
-        <label className={styles.field}>
-          <span className={styles.labelText}>Username</span>
-          <div className={styles.inputRow}>
-            <input
-              name="name"
-              type="text"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-            <svg className={styles.icon} viewBox="0 0 24 24" width="18">
-        <path 
-  fill="currentColor" 
-  d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"
-/>
-
-            </svg>
+    <div className={styles.outer}>
+      <div className={styles.frame}>
+        {/* LEFT PANEL */}
+        <div className={styles.left}>
+          <div className={styles.leftContent}>
+            <h1>
+              WELCOME
+              <br />
+              BACK!
+            </h1>
+            <p>Access granted. Your digital world awaits.</p>
           </div>
-        </label>
-
-        {/* Email */}
-        <label className={styles.field}>
-          <span className={styles.labelText}>Email</span>
-          <div className={styles.inputRow}>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-            <svg className={styles.icon} viewBox="0 0 24 24" width="18">
-            <path 
-  fill="currentColor" 
-  d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
-/>
-
-            </svg>
-          </div>
-        </label>
-
-        {/* Password */}
-<label className={styles.field}>
-  <span className={styles.labelText}>Password</span>
-
-  <div className={styles.inputRow}>
-    <input
-      name="password"
-      type={showPassword ? "text" : "password"}
-      value={form.password}
-      onChange={handleChange}
-      autoComplete="new-password"
-      required
-    />
-
-    {/* 🔥 LOCK TOGGLE ICON */}
-    <svg
-      className={styles.icon}
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      onClick={() => setShowPassword(!showPassword)}
-      style={{ cursor: "pointer", pointerEvents: "auto" }}
-    >
-      {showPassword ? (
-        // 🔓 UNLOCKED ICON (password showing)
-        <path
-          fill="currentColor"
-          d="M17 8h-1V6a4 4 0 0 0-8 0h2a2 2 0 1 1 4 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm0 12H7V10h10v10z"
-        />
-      ) : (
-        // 🔒 LOCKED ICON (password hidden)
-        <path
-          fill="currentColor"
-          d="M17 8V6a5 5 0 0 0-10 0v2H5v14h14V8h-2zm-8 0V6a3 3 0 0 1 6 0v2H9z"
-        />
-      )}
-    </svg>
-  </div>
-</label>
-
-
-        <div className={styles.ctaWrap}>
-          <button type="submit" className={styles.cta}>Sign Up</button>
         </div>
 
-        <p className={styles.footerText}>
-          Already have an account?
-          <button type="button" className={styles.link} onClick={() => navigate("/login")}>
-            Login
-          </button>
-        </p>
+        {/* RIGHT PANEL */}
+        <div className={styles.right}>
+          {/* 👉 YOUR EXISTING WORKING SIMPLE FORM GOES HERE */}
+          {/* DON’T CHANGE YOUR HANDLE SUBMIT */}
 
-      </form>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <h2>Sign Up</h2>
+
+            {/* Username */}
+            <label className={styles.field}>
+              <span className={styles.labelText}>Username</span>
+              <div className={styles.inputRow}>
+                <input
+                  name="name"
+                  type="text"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
+                <svg className={styles.icon} viewBox="0 0 24 24" width="18">
+                  <path
+                    fill="currentColor"
+                    d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"
+                  />
+                </svg>
+              </div>
+            </label>
+
+            {/* Email */}
+            <label className={styles.field}>
+              <span className={styles.labelText}>Email</span>
+              <div className={styles.inputRow}>
+                <input
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+                <svg className={styles.icon} viewBox="0 0 24 24" width="18">
+                  <path
+                    fill="currentColor"
+                    d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                  />
+                </svg>
+              </div>
+            </label>
+
+            {/* Password */}
+            <label className={styles.field}>
+              <span className={styles.labelText}>Password</span>
+
+              <div className={styles.inputRow}>
+                <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
+                  onChange={handleChange}
+                  autoComplete="new-password"
+                  required
+                />
+
+                {/* 🔥 LOCK TOGGLE ICON */}
+                <svg
+                  className={styles.icon}
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ cursor: "pointer", pointerEvents: "auto" }}
+                >
+                  {showPassword ? (
+                    // 🔓 UNLOCKED ICON (password showing)
+                    <path
+                      fill="currentColor"
+                      d="M17 8h-1V6a4 4 0 0 0-8 0h2a2 2 0 1 1 4 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm0 12H7V10h10v10z"
+                    />
+                  ) : (
+                    // 🔒 LOCKED ICON (password hidden)
+                    <path
+                      fill="currentColor"
+                      d="M17 8V6a5 5 0 0 0-10 0v2H5v14h14V8h-2zm-8 0V6a3 3 0 0 1 6 0v2H9z"
+                    />
+                  )}
+                </svg>
+              </div>
+            </label>
+
+            <div className={styles.ctaWrap}>
+              <button type="submit" className={styles.cta}>
+                Sign Up
+              </button>
+            </div>
+
+            <p className={styles.footerText}>
+              Already have an account?
+              <button
+                type="button"
+                className={styles.link}
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
-
-  </div>
-</div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;
