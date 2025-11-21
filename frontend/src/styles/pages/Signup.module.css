@@ -1,93 +1,221 @@
-/* Reset styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap');
+
+:root{
+  --bg:#08060a;
+  --left-from:#4b1bff;
+  --left-to:#7f3bff;
+  --neon: rgba(160,80,255,0.95);
 }
 
-body {
-  background: #f0f2f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Container */
-.container {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-}
-
-/* Signup Box */
-.signupBox {
-  background: #fff;
+.outer{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: var(--bg);
   padding: 30px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.frame{
+  width: 1150px;
+  height: 630px;
+  display:flex;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: visible;
 }
 
-.signupBox h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #333;
+/* OUTER GLOW */
+.frame::before{
+  content:"";
+  position:absolute;
+  inset:-10px;
+  border-radius: 14px;
+  border:2px solid rgba(190,120,255,0.35);
+  box-shadow:
+    0 0 18px rgba(120,60,255,0.45),
+    0 0 46px rgba(120,60,255,0.18),
+    0 0 110px rgba(120,60,255,0.08);
+  pointer-events: none;
 }
 
-/* Input fields */
-.inputGroup {
-  margin-bottom: 15px;
+/* LEFT PANEL — FIXED VERSION */
+.left{
+  width:56%;
+  height:100%;
+  background:linear-gradient(135deg,var(--left-from),var(--left-to));
+  border-radius:8px 0 0 8px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:56px 48px;
+  position:relative;
+  box-shadow: inset -8px -12px 40px rgba(0,0,0,0.25);
+
+  /* 🔥 MAIN FIX: Left panel never blocks clicks */
+  pointer-events: none;
 }
 
-.inputGroup label {
-  font-size: 14px;
-  color: #555;
+/* INNER BORDER LINE — FIXED */
+.left::before{
+  content:"";
+  position:absolute;
+  right:calc(28% - 4px);
+  top:6px;
+  bottom:6px;
+  width:6px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.02));
+  transform:skewX(-22deg);
+  border-radius:0 6px 6px 0;
+  box-shadow:0 0 6px rgba(160,80,255,0.2);
+
+  /* 🔥 FIX: This line also won’t block clicks now */
+  pointer-events: none;
 }
 
-.inputGroup input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  outline: none;
-  transition: 0.3s;
+.leftContent{
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,0.35);
+  text-align:left;
+
+  /* 🔥 Left text clickable if needed */
+  pointer-events: auto;
+  position: relative;
+  z-index: 5;
 }
 
-.inputGroup input:focus {
-  border-color: #007bff;
+.leftContent h1{
+  font-size:52px;
+  font-weight:900;
+  line-height:1;
 }
 
-/* Button */
-.btn {
-  width: 100%;
-  padding: 12px;
-  background: #007bff;
-  color: white;
+.leftContent p{
+  margin-top:16px;
+  font-size:15px;
+  opacity:0.9;
+}
+
+/* RIGHT PANEL */
+.right{
+  width:44%;
+  height:100%;
+  background:#08060a;
+  border-radius:0 8px 8px 0;
+  padding:64px 56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position: relative;
+  z-index: 10; /* 🔥 ensures clicks land here */
+}
+
+/* FORM */
+.form{
+  width:100%;
+  max-width:360px;
+  color:#fff;
+}
+
+.form h2{
+  font-size:34px;
+  font-weight:800;
+  margin-bottom:28px;
+}
+
+.labelText{
+  font-size:14px;
+  color:#cfc5d9;
+  margin-bottom:8px;
+  display:block;
+}
+
+.inputRow{
+  position:relative;
+}
+
+.field{
+  margin-bottom:26px;
+}
+
+/* TRANSPARENT INPUT FIX */
+.field input{
+  width:100%;
+  background:transparent !important;
+  border:0;
+  border-bottom:3px solid rgba(255,255,255,0.15);
+  padding:12px 44px 10px 0;
+  color:rgba(182, 171, 171, 0.542)!important;
+  font-size:15px;
+  outline:none;
+
+  -webkit-box-shadow:0 0 0px 1000px transparent inset !important;
+          box-shadow:0 0 0px 1000px transparent inset !important;
+}
+
+input:-webkit-autofill{
+  -webkit-box-shadow:0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color:white !important;
+}
+
+/* ICONS */
+.icon{
+  position:absolute;
+  right:0;
+  bottom:8px;
+  color:rgba(182, 171, 171, 0.542);
+  opacity:0.9;
+}
+
+/* BUTTON */
+.cta{
+  width:76%;
+  padding:14px 16px;
+  background:linear-gradient(180deg,#8b46ff,#6422ff);
+  border-radius:36px;
+  border:none;
+  color:white;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+
+  box-shadow:0 10px 30px rgba(120,60,255,0.28),
+             inset 0 -6px 18px rgba(0,0,0,0.25);
+}
+
+.cta:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 60px rgba(120,60,255,0.36);
+}
+
+/* FOOTER */
+.footerText{
+  margin-top:16px;
+  font-size:14px;
+  color:#bbb;
+}
+
+.link{
+  background: none;
+  margin-left:6px;
+  color:#d7b8ff;
+  cursor:pointer;
+  font-weight:600;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-size: 16px;
 }
 
-.btn:hover {
-  background: #0056c8;
-}
-
-/* Login link */
-.loginLink {
-  text-align: center;
-  margin-top: 15px;
-  color: #555;
-}
-
-.loginLink span {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.loginLink a:hover {
-  text-decoration: underline;
+/* FULL autofill override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    -webkit-text-fill-color: #fff !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    transition: background-color 5000s ease-in-out 0s;
 }

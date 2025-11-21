@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +20,6 @@ function Login() {
     e.preventDefault();
     try {
       setLoading(true);
-      setErrorMsg("");
       const res = await axios.post("http://localhost:5000/api/login", form);
 
       const token = res.data.token;
@@ -32,70 +30,92 @@ function Login() {
       alert("Login successful!");
       navigate("/home");
     } catch (err) {
-      const msg = err.response?.data?.message || "Login failed";
-      setErrorMsg(msg);
+      setErrorMsg(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <h2 className={styles.title}>Welcome Back</h2>
-        <p className={styles.subtitle}>Login to your account</p>
+    <div className={styles.outer}>
+      <div className={styles.frame}>
 
-        <form onSubmit={handleSubmit}>
-          <div className={styles.inputBox}>
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              onChange={handleChange}
-            />
+        {/* LEFT PANEL – same as Signup */}
+        <div className={styles.left}>
+          <div className={styles.leftContent}>
+            <h1>WELCOME<br/>BACK!</h1>
+            <p>Login to continue your journey</p>
           </div>
+        </div>
 
-          <div className={styles.inputBox}>
-            <label>Password</label>
-            <div className={styles.passwordWrapper}>
-              <input
-                type={showPass ? "text" : "password"}
-                name="password"
-                placeholder="Enter your password"
-                onChange={handleChange}
-              />
-              <span
-                className={styles.showPass}
-                onClick={() => setShowPass(!showPass)}
+        {/* RIGHT PANEL */}
+        <div className={styles.right}>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <h2>Login</h2>
+
+            {/* Email */}
+            <label className={styles.field}>
+              <span className={styles.labelText}>Email</span>
+              <div className={styles.inputRow}>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </label>
+
+            {/* Password */}
+            <label className={styles.field}>
+              <span className={styles.labelText}>Password</span>
+
+              <div className={styles.inputRow}>
+                <input
+                  type={showPass ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter your password"
+                  onChange={handleChange}
+                  required
+                />
+
+                <span
+                  className={styles.showPass}
+                  onClick={() => setShowPass(!showPass)}
+                >
+                  {showPass ? "Hide" : "Show"}
+                </span>
+              </div>
+            </label>
+
+            {/* Forgot */}
+            <p
+              className={styles.forgot}
+              onClick={() => navigate("/reset-password")}
+            >
+              Forgot Password?
+            </p>
+
+            {errorMsg && <p className={styles.error}>{errorMsg}</p>}
+
+            <button className={styles.cta} type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+
+            <p className={styles.footerText}>
+              Don't have an account?
+              <button
+                type="button"
+                className={styles.link}
+                onClick={() => navigate("/signup")}
               >
-                {showPass ? "Hide" : "Show"}
-              </span>
-            </div>
-          </div>
+                Sign Up
+              </button>
+            </p>
+          </form>
+        </div>
 
-          {/* Reset Password Link */}
-          <p
-            className={styles.forgot}
-            onClick={() => navigate("/reset-password")}
-          >
-            Forgot Password?
-          </p>
-
-          {errorMsg && <p style={{ color: "crimson" }}>{errorMsg}</p>}
-
-          <button
-            className={`${styles.btn} ${loading ? styles.disabled : ""}`}
-            type="submit"
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-
-          <p className={styles.signupLink}>
-            Don't have an account?{" "}
-            <span onClick={() => navigate("/signup")}>Sign Up</span>
-          </p>
-        </form>
       </div>
     </div>
   );

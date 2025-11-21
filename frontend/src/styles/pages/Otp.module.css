@@ -1,90 +1,169 @@
-/* Center container */
-.otpContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #f5f6fa;
-  font-family: "Poppins", sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap');
+
+:root{
+  --bg:#08060a;
+  --left-from:#4b1bff;
+  --left-to:#7f3bff;
 }
 
-/* Card */
-.card {
-  background: #ffffff;
-  padding: 40px 30px;
-  width: 380px;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  text-align: center;
+.outer{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: var(--bg);
+  padding: 30px;
+  font-family: 'Poppins', sans-serif;
 }
 
-/* Title */
-.title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #333;
+.frame{
+  width: 1150px;
+  height: 630px;
+  display:flex;
+  border-radius: 12px;
+  position: relative;
 }
 
-/* Subtitle */
-.subtitle {
-  margin-bottom: 20px;
-  font-size: 14px;
-  color: #555;
+/* OUTER GLOW */
+.frame::before{
+  content:"";
+  position:absolute;
+  inset:-10px;
+  border-radius: 14px;
+  border:2px solid rgba(190,120,255,0.35);
+  box-shadow:
+    0 0 18px rgba(120,60,255,0.45),
+    0 0 46px rgba(120,60,255,0.18),
+    0 0 110px rgba(120,60,255,0.08);
+  pointer-events:none;
 }
 
-/* OTP input */
-.otpInput {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  margin-bottom: 15px;
-  outline: none;
-  transition: 0.3s ease;
+/* LEFT PANEL */
+.left{
+  width:56%;
+  height:100%;
+  border-radius:8px 0 0 8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:56px 48px;
+  position:relative;
+  clip-path:polygon(0 0,72% 0,60% 100%,0% 100%);
+  pointer-events:none;
 }
 
-.otpInput:focus {
-  border-color: #4b7bec;
+.leftContent{
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,0.35);
+  text-align:left;
+  pointer-events:auto;
 }
 
-/* Buttons */
-.verifyBtn {
-  width: 100%;
-  background: #4b7bec;
-  color: white;
-  padding: 12px 0px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+.leftContent h1{
+  font-size:52px;
+  font-weight:900;
+  line-height:1;
 }
 
-.verifyBtn:hover {
-  background: #3867d6;
+.leftContent p{
+  margin-top:16px;
+  font-size:15px;
+  opacity:0.9;
 }
 
-/* Resend OTP */
-.resendText {
-  margin-top: 18px;
-  font-size: 14px;
-  color: #555;
+/* RIGHT PANEL */
+.right{
+  width:44%;
+  height:100%;
+  background:#08060a;
+  border-radius:0 8px 8px 0;
+  padding:64px 56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.resendLink {
-  color: #4b7bec;
-  cursor: pointer;
-  font-weight: 600;
+/* FORM */
+.form{
+  width:100%;
+  max-width:360px;
+  color:#fff;
 }
 
-.resendLink:hover {
-  text-decoration: underline;
+.form h2{
+  font-size:34px;
+  font-weight:800;
+  margin-bottom:28px;
 }
 
-/* Loading disable */
-.disabled {
-  opacity: 0.6;
-  pointer-events: none;
+/* FIELD */
+.field{
+  margin-bottom:26px;
+}
+
+.labelText{
+  font-size:14px;
+  color:#cfc5d9;
+  margin-bottom:8px;
+  display:block;
+}
+
+.inputRow{
+  position:relative;
+}
+
+.inputRow input{
+  width:100%;
+  background:transparent;
+  border:0;
+  border-bottom:3px solid rgba(255,255,255,0.15);
+  padding:12px 44px 10px 0;
+  color:white;
+  font-size:16px;
+  outline:none;
+}
+
+/* ICON */
+.icon{
+  position:absolute;
+  right:0;
+  bottom:8px;
+  color:#aaa;
+}
+
+/* BUTTON */
+.cta{
+  width:76%;
+  padding:14px 16px;
+  background:linear-gradient(180deg,#8b46ff,#6422ff);
+  border-radius:36px;
+  border:none;
+  color:white;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+
+  box-shadow:0 10px 30px rgba(120,60,255,0.28),
+             inset 0 -6px 18px rgba(0,0,0,0.25);
+}
+
+.cta:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 60px rgba(120,60,255,0.36);
+}
+
+/* FOOTER */
+.footerText{
+  margin-top:16px;
+  font-size:14px;
+  color:#bbb;
+}
+
+.link{
+  background:none;
+  border:none;
+  color:#d7b8ff;
+  margin-left:6px;
+  cursor:pointer;
+  font-weight:600;
 }

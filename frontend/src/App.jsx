@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import Signup from "./pages/auth/Signup";
 import Otp from "./pages/auth/Otp";
 import Login from "./pages/auth/Login";
