@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 import Signup from "./pages/auth/Signup";
 import Otp from "./pages/auth/Otp";
 import Login from "./pages/auth/Login";
@@ -10,7 +12,8 @@ import ProtectedRoute from "./pages/auth/ProtectedRoute";
 
 function App() {
   return (
-    <>
+<GoogleOAuthProvider clientId="1060269320432-7rb5d1kvt2d81mr5r3k217bmoqr23ts1.apps.googleusercontent.com">
+
       <Routes>
         <Route path="/" element={<Navigate to="/signup" replace />} />
 
@@ -18,7 +21,6 @@ function App() {
         <Route path="/verify-otp" element={<Otp />} />
         <Route path="/login" element={<Login />} />
 
-        {/* 🔥 Protected Home Route */}
         <Route
           path="/home"
           element={
@@ -28,14 +30,12 @@ function App() {
           }
         />
 
-        {/* Reset password routes */}
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/reset-password/:token" element={<ResetPasswordToken />} />
 
-        {/* Fallback */}
         <Route path="*" element={<div>404 - Page not found</div>} />
       </Routes>
-    </>
+    </GoogleOAuthProvider>
   );
 }
 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // signup
-const { signup, verifyOTP, resendOTP,  } = require("../controllers/userController");
+const { signup, verifyOTP, resendOTP, googleLogin,  } = require("../controllers/userController");
 
 //Login
 const { Login, resetPassword, resetpasswordToken } = require("../controllers/loginController");
@@ -20,6 +20,10 @@ router.post("/resend-otp", resendOTP);
 
 //login
 router.post("/login",Login);
+
+
+// google login
+router.post("/google-login", googleLogin);
 
 
 // token verify

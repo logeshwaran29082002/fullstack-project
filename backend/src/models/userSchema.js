@@ -1,21 +1,24 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
     },
+    
+    // ⚠️ Make password optional (Google login users have no password)
     password: {
-        type: String,
-        required: true
+      type: String,
+      required: false  
     },
 
     otp: { type: String },
@@ -23,11 +26,18 @@ const userSchema = new mongoose.Schema({
     isVerified: { type: Boolean, default: false },
 
     resetpasswordToken: { type: String },
-    resetpasswordExpires: { type: Date }
+    resetpasswordExpires: { type: Date },
 
-}, { timestamps: true });
+    // ⭐ Google Login fields
+    googleAccount: {
+      type: Boolean,
+      default: false
+    },
+    avatar: {
+      type: String
+    }
+  },
+  { timestamps: true }
+);
 
-// IMPORTANT FIX ↓↓↓ DON'T CHANGE!!
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

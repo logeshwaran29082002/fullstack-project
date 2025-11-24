@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import styles from "../../styles/pages/Signup.module.css";
 
 function Signup() {
@@ -20,17 +22,38 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // ✔ Name validation
+    if (!/^[A-Za-z ]{5,30}$/.test(form.name)) {
+      return alert("Enter a valid name (Only letters and spaces, 5-30 characters)");
+    }
+
+    // ✔ Password validation
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]).{8,}$/;
+
+    if (!passwordRegex.test(form.password)) {
+      return alert(
+        "Password must contain:\n• 1 Capital Letter\n• 1 Number\n• 1 Symbol\n• Minimum 8 Characters"
+      );
+    }
+
+    // ✔ Email validation
+    if (!form.email.toLowerCase().endsWith("@gmail.com")) {
+      return alert("Only Gmail email IDs are allowed!");
+    }
+
     try {
+      // ✔ SEND DATA TO BACKEND
       const response = await axios.post(
         "http://localhost:5000/api/signup",
         form
       );
 
-      // 🔥 Pass email + userId to OTP page (VERY IMPORTANT)
+      // ✔ MOVE TO OTP VERIFY PAGE
       navigate("/verify-otp", {
         state: {
           email: form.email,
-          userId: response.data.userId, // 👈 BACKEND RETURNED USERID
+          userId: response.data.userId,
         },
       });
     } catch (err) {
@@ -41,7 +64,6 @@ function Signup() {
   return (
     <div className={styles.outer}>
       <div className={styles.frame}>
-        {/* LEFT PANEL */}
         <div className={styles.left}>
           <div className={styles.leftContent}>
             <h1>
@@ -53,15 +75,11 @@ function Signup() {
           </div>
         </div>
 
-        {/* RIGHT PANEL */}
         <div className={styles.right}>
-          {/* 👉 YOUR EXISTING WORKING SIMPLE FORM GOES HERE */}
-          {/* DON’T CHANGE YOUR HANDLE SUBMIT */}
-
           <form className={styles.form} onSubmit={handleSubmit}>
             <h2>Sign Up</h2>
 
-            {/* Username */}
+            {/* USERNAME */}
             <label className={styles.field}>
               <span className={styles.labelText}>Username</span>
               <div className={styles.inputRow}>
@@ -81,7 +99,7 @@ function Signup() {
               </div>
             </label>
 
-            {/* Email */}
+            {/* EMAIL */}
             <label className={styles.field}>
               <span className={styles.labelText}>Email</span>
               <div className={styles.inputRow}>
@@ -101,10 +119,9 @@ function Signup() {
               </div>
             </label>
 
-            {/* Password */}
+            {/* PASSWORD */}
             <label className={styles.field}>
               <span className={styles.labelText}>Password</span>
-
               <div className={styles.inputRow}>
                 <input
                   name="password"
@@ -115,7 +132,6 @@ function Signup() {
                   required
                 />
 
-                {/* 🔥 LOCK TOGGLE ICON */}
                 <svg
                   className={styles.icon}
                   viewBox="0 0 24 24"
@@ -125,13 +141,11 @@ function Signup() {
                   style={{ cursor: "pointer", pointerEvents: "auto" }}
                 >
                   {showPassword ? (
-                    // 🔓 UNLOCKED ICON (password showing)
                     <path
                       fill="currentColor"
                       d="M17 8h-1V6a4 4 0 0 0-8 0h2a2 2 0 1 1 4 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm0 12H7V10h10v10z"
                     />
                   ) : (
-                    // 🔒 LOCKED ICON (password hidden)
                     <path
                       fill="currentColor"
                       d="M17 8V6a5 5 0 0 0-10 0v2H5v14h14V8h-2zm-8 0V6a3 3 0 0 1 6 0v2H9z"
@@ -141,11 +155,32 @@ function Signup() {
               </div>
             </label>
 
-            <div className={styles.ctaWrap}>
-              <button type="submit" className={styles.cta}>
-                Sign Up
-              </button>
-            </div>
+            {/* GOOGLE LOGIN */}
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                try {
+                  const decoded = jwtDecode(credentialResponse.credential);
+
+                  await axios.post("http://localhost:5000/api/google-login", {
+                    name: decoded.name,
+                    email: decoded.email,
+                    picture: decoded.picture
+                  });
+
+                  navigate("/home");
+                } catch (err) {
+                  alert("Google Login Failed");
+                }
+              }}
+              onError={() => {
+                alert("Google Login Failed");
+              }}
+            />
+
+            {/* NORMAL SIGNUP BUTTON */}
+            <button type="submit" className={styles.submitBtn}>
+              Sign Up
+            </button>
 
             <p className={styles.footerText}>
               Already have an account?
