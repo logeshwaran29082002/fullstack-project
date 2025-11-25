@@ -156,29 +156,31 @@ function Signup() {
             </label>
 
             {/* GOOGLE LOGIN */}
-            <GoogleLogin
-              onSuccess={async (credentialResponse) => {
-                try {
-                  const decoded = jwtDecode(credentialResponse.credential);
+       <div className={styles.googleBtn}>
+  <GoogleLogin
+    onSuccess={async (credentialResponse) => {
+      try {
+        const decoded = jwtDecode(credentialResponse.credential);
 
-                  await axios.post("http://localhost:5000/api/google-login", {
-                    name: decoded.name,
-                    email: decoded.email,
-                    picture: decoded.picture
-                  });
+        await axios.post("http://localhost:5000/api/google-login", {
+          name: decoded.name,
+          email: decoded.email,
+          picture: decoded.picture,
+        });
 
-                  navigate("/home");
-                } catch (err) {
-                  alert("Google Login Failed");
-                }
-              }}
-              onError={() => {
-                alert("Google Login Failed");
-              }}
-            />
+        navigate("/home");
+      } catch (err) {
+        alert("Google Login Failed");
+      }
+    }}
+    onError={() => {
+      alert("Google Login Failed");
+    }}
+  />
+</div>
 
             {/* NORMAL SIGNUP BUTTON */}
-            <button type="submit" className={styles.submitBtn}>
+            <button type="submit" className={styles.cta}>
               Sign Up
             </button>
 
